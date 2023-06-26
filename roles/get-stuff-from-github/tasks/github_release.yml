@@ -1,0 +1,10 @@
+---
+  - name: Downloading Releases
+    ansible.builtin.shell:
+      cmd: "python3 scripts/githubdownload.py -r {{item.repo}} -x {{item.regex}} -o {{gitrelease_save}}"
+    loop: "{{gitvars.release}}"
+    loop_control:
+      label: "{{item.repo}}" 
+  - name: Making them executable
+    ansible.builtin.shell:
+      cmd: "chmod +x /opt/bin/*"

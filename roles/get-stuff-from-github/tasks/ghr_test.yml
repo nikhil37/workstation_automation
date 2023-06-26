@@ -1,0 +1,34 @@
+---
+  - name: Get release data
+    ansible.builtin.uri:
+      url: "https://api.github.com/repos/{{ item.repo }}/releases/latest" 
+      method: "GET"
+    loop: "{{ gitvars.release }}"
+    register: git_resp
+  - name: Making temp dir for downloads
+    ansible.builtin.file:
+      path: /tmp/setup
+      state: directory
+  - name: Making temp dir for downloads
+    ansible.builtin.file:
+      path: /opt/bin
+      state: directory
+  - name: Downloading Releases
+    ansible.builtin.get_url:
+      url: "{{ item[0].json.assets[item[1].asset_index].browser_download_url }}"
+      dest: "/tmp/setup/{{ item[0].json.assets[item[1].asset_index].name }}"
+      force: true
+    loop: "{{ git_resp.results | zip(gitvars.release) }}"
+    loop_control:
+      label: "{{ item[0].json.assets[item[1].asset_index].name }}"
+  - name: Copy script to host
+    ansible.builtin.copy:
+      src: "files/handle_release_downloads.sh"
+      dest: "/tmp/handle_release_downloads.sh"
+      mode: 0744
+  - name: Moving Releases to /opt/bin
+    ansible.builtin.shell:
+        /tmp/handle_release_downloads.sh
+  - name: Cleaning up
+    ansible.builtin.shell:
+      cmd: rm -rf /tmp/setup

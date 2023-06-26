@@ -1,0 +1,13 @@
+---
+  - name: Setting up permissions on /opt
+    ansible.builtin.shell:
+      cmd: chown {{ ansible_env.USER }}:{{ ansible_env.USER }} /opt
+       # - chmod 755 /opt
+    become: true
+  - import_tasks: github_clone.yml
+    tags:
+      - github_clone
+  - import_tasks: github_release.yml
+    tags:
+      - github_release
+

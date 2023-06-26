@@ -1,0 +1,12 @@
+---
+  - name: Load terminal profiles
+    ansible.builtin.shell:
+      cmd: "dconf load /org/mate/terminal/ < roles/configure-terminal/files/profile.dump"
+    tags:
+      - terminal_profiles
+  - name: Load terminal profiles
+    ansible.builtin.shell:
+      cmd: "dconf load /org/mate/terminal/ < roles/configure-terminal/files/profile.dump"
+    tags:
+      - mate_panel
+

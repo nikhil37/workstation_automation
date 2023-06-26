@@ -1,0 +1,30 @@
+---
+  - name: Retrieve file or file system status
+    ansible.builtin.stat:
+      path: ohmytmux_path # The full path of the file/object to get the facts of
+    register: omts
+  - name: "Installing tmux"
+    apt:
+      name: 
+        - tmux
+        - git
+      state: latest
+    become: true
+    become_method: sudo
+  - name: oh my tmux step 1
+    ansible.builtin.git:
+      repo: "https://github.com/gpakosz/.tmux.git"
+      dest: "{{ ansible_env.HOME }}/.tmux"
+    when: not omts.stat.exists
+  - name: oh my tmux step 2
+    ansible.builtin.shell:
+      cmd: ln -s -f .tmux/.tmux.conf
+      chdir: "{{ ansible_env.HOME }}"
+    when: not omts.stat.exists
+  - name: oh my tmux step 3
+    ansible.builtin.shell:
+      cmd: cp .tmux/.tmux.conf.local .
+      chdir: "{{ ansible_env.HOME }}"
+    when: not omts.stat.exists
+
+

@@ -1,0 +1,58 @@
+---
+  - name: "Base installation for workstation"
+    hosts: 
+     - localhost
+    vars:
+      firefox_profiles:
+        default:
+          preferences:
+            network.cookie.cookieBehavior: 1
+            privacy.donottrackheader.enabled: true
+            signon.rememberSignons: false
+            datareporting.healthreport.uploadEnabled: false
+            privacy.trackingprotection.enabled: true
+            privacy.trackingprotection.fingerprinting.enabled: true
+            privacy.trackingprotection.cryptomining.enabled: true
+            privacy.trackingprotection.socialtracking.enabled: true
+            privacy.socialtracking.block_cookies.enabled: true
+        unsaved:
+          extensions:
+            - adblock-plus
+            - darkreader
+            - ublock origin
+            - foxyproxy-standard
+            - clear-browsing-data
+          preferences:
+            privacy.donottrackheader.enabled: true
+            signon.rememberSignons: false
+            datareporting.healthreport.uploadEnabled: false
+            privacy.trackingprotection.enabled: true
+            privacy.trackingprotection.fingerprinting.enabled: true
+            privacy.trackingprotection.cryptomining.enabled: true
+            privacy.trackingprotection.socialtracking.enabled: true
+            privacy.socialtracking.block_cookies.enabled: true
+    connection: local
+    roles:
+      - role: "roles/configure-terminal"
+        tags:
+          - terminal
+      - role: "roles/install-all-packages"
+        tags:
+          - apt
+      - role: "roles/get-stuff-from-github"
+        tags:
+          - github
+      - role: "roles/setting-up-burp"
+        tags:
+          - burpsuite
+      - role: gantsign.visual-studio-code
+        users:
+          - username: "{{ ansible_user_id }}" 
+            visual_studio_code_extensions:
+              - streetsidesoftware.code-spell-checker
+              - ms-python.python
+              - DEVSENSE.phptools-vscode
+              - snyk-security.snyk-vulnerability-scanner
+        tags:
+          - vs-code
+      - role: basvandenbrink.firefox

@@ -1,0 +1,8 @@
+---
+  - name: Cloning all repos
+    ansible.builtin.git:
+      repo: "{{ item.repo }}"
+      dest: "/opt/{{ item.dest }}"
+    loop: "{{ gitvars.clone }}"
+    loop_control:
+      label: "{{ item.dest }}"

@@ -1,0 +1,13 @@
+---
+# tasks file for configure-terminal
+  - import_tasks: zsh.yml
+    tags:
+      - terminal_zsh
+  - import_tasks: tmux.yml
+    tags:
+      - terminal_tmux
+  - import_tasks: mate.yml
+    tags:
+      - terminal_mate
+
+

@@ -1,0 +1,49 @@
+---
+
+  - name: registering 1
+    ansible.builtin.stat:
+      path: ohmyzsh_path
+    register: ozshp
+    tags:
+      - omz
+  - name: registering 2
+    ansible.builtin.stat:
+      path: ohmyzsh_autosug_path
+    register: ozshasp
+    tags:
+      - omz_plugin
+  - name: "Installing zsh"
+    apt:
+      name: 
+       - zsh
+       - zsh-autosuggestions
+       - git
+      state: latest
+    become: true
+    become_method: sudo
+    tags:
+      - omz
+  - name: "Installing oh my zsh"
+    shell: 
+      cmd: ls {{ ansible_env.HOME }}/.oh-my-zsh || sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    tags:
+      - omz
+  - name: "Setting up configuration"
+    copy:
+      src: files/.zshrc
+      dest: "{{ ansible_env.HOME }}/.zshrc"
+  - name: "Installing auto suggester for zsh"
+    git:
+      repo: "https://github.com/zsh-users/zsh-autosuggestions"
+      dest: "{{ ansible_env.HOME }}/.oh-my-zsh/plugins/zsh-autosuggestions"
+      clone: true
+    when: not ozshasp.stat.exists
+    tags:
+      - omz_plugin
+  - name: Changing default shell to zsh
+    ansible.builtin.shell:
+      cmd: "echo | chsh -s /bin/zsh"
+    become: true
+
+
+

@@ -1,0 +1,25 @@
+---
+# vars file for get-stuff-from-github
+gitrelease_save: "/opt/bin"
+tmpdwn: "/tmp/setup"
+gitvars:
+  clone:
+    - repo: "https://github.com/danielmiessler/SecLists"
+      dest: "SecLists"
+    - repo: "https://github.com/Flangvik/SharpCollection"
+      dest: "SharpCollection"
+  release:
+    - repo: "icsharpcode/AvaloniaILSpy"
+      regex: "Linux.x64"
+    - repo: "obsidianmd/obsidian-releases"
+      regex: "Obsidian-[0-9.]{5,6}.AppImage"
+    - repo: "DominicBreuker/pspy"
+      regex: "pspy64"
+    - repo: "carlospolop/PEASS-ng"
+      regex: "linpeas.sh"
+    - repo: "carlospolop/PEASS-ng"
+      regex: "winPEASany.exe"
+    - repo: "jpillora/chisel"
+      regex: "linux_amd64"
+
+

@@ -1,0 +1,5 @@
+---
+# vars file for configure-terminal
+ohmytmux_path: "{{ ansible_env.HOME }}/.tmux/README.md" 
+ohmyzsh_path: "{{ ansible_env.HOME }}/.oh-my-zsh/README.md"
+ohmyzsh_autosug_path: "{{ ansible_env.HOME }}/.oh-my-zsh/plugins/zsh-autosuggestions/README.md"
